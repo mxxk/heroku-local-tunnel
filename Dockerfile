@@ -22,7 +22,8 @@ WORKDIR /app
 COPY --from=build_python /build/venv ./venv/
 COPY --from=build_rust /build/tunnelto/target/release/tunnelto_server ./
 COPY ./haproxy.cfg ./docker-entrypoint.py ./
-# Use Tini explicitly since Heroku does not provide a way to do `docker run --init`
-ENTRYPOINT ["tini", "--"]
+# Use Tini explicitly since Heroku does not provide a way to do `docker run --init`.
+# Make Tini be a subreaper since Heroku does not run it as PID 1.
+ENTRYPOINT ["tini", "-s", "--"]
 ENV PATH=/app/venv/bin:${PATH}
 CMD ["./docker-entrypoint.sh"]
