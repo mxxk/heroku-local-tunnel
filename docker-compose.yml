@@ -1,0 +1,12 @@
+version: '3'
+services:
+  main:
+    build: .
+    env_file:
+      .env
+    ports:
+      - 8000:${PORT}
+    volumes:
+      # Bind-mount for quick local testing without rebuilding container.
+      - ./haproxy.cfg:/app/haproxy.cfg:ro
+      - ./docker-entrypoint.py:/app/docker-entrypoint.py:ro
