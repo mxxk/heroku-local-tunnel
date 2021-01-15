@@ -1,6 +1,6 @@
 version: '3'
 services:
-  main:
+  web:
     build: .
     env_file:
       .env
@@ -10,3 +10,4 @@ services:
       # Bind-mount for quick local testing without rebuilding container.
       - ./haproxy.cfg:/app/haproxy.cfg:ro
       - ./docker-entrypoint.py:/app/docker-entrypoint.py:ro
+      - ./renew-certificate.py:/app/renew-certificate.py:ro

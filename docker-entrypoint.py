@@ -16,18 +16,14 @@ def main():
             'TUNNELTO_TUNNEL_PORT',
         ]
     }),
-    tunnelto_env = {
+    subprocess.Popen(['./tunnelto_server'], env={
         'RUST_LOG': 'tunnelto_server=debug',
         'RUST_BACKTRACE': '1',
         'PORT': os.environ['TUNNELTO_TUNNEL_PORT'],
         'ALLOWED_HOSTS': os.environ['TUNNELTO_ALLOWED_HOSTS'],
-        # TODO: DECIDE
-        # 'ALLOW_UNKNOWN_CLIENTS': '1',
-    }
-    tunnelto_secret_key = os.environ.get('TUNNELTO_SECRET_KEY')
-    if tunnelto_secret_key:
-        tunnelto_env['SECRET_KEY'] = tunnelto_secret_key
-    subprocess.Popen(['./tunnelto_server'], env=tunnelto_env)
+        'AWS_ACCESS_KEY_ID': os.environ['TUNNELTO_AWS_ACCESS_KEY_ID'],
+        'AWS_SECRET_ACCESS_KEY': os.environ['TUNNELTO_AWS_SECRET_ACCESS_KEY'],
+    })
     # Wait for first process to exit, then exit the entire program.
     os.wait()
 
