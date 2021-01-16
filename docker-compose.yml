@@ -11,3 +11,4 @@ services:
       - ./haproxy.cfg:/app/haproxy.cfg:ro
       - ./docker-entrypoint.py:/app/docker-entrypoint.py:ro
       - ./renew-certificate.py:/app/renew-certificate.py:ro
+      - ./services.d:/etc/services.d:ro

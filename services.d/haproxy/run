@@ -1,0 +1,15 @@
+#!/usr/bin/execlineb -S0
+
+multisubstitute
+{
+    importas PORT PORT
+    importas TUNNELTO_ALLOWED_HOSTS TUNNELTO_ALLOWED_HOSTS
+    importas TUNNELTO_CTRL_PORT TUNNELTO_CTRL_PORT
+    importas TUNNELTO_TUNNEL_PORT TUNNELTO_TUNNEL_PORT
+}
+emptyenv -p
+export PORT ${PORT}
+export TUNNELTO_ALLOWED_HOSTS ${TUNNELTO_ALLOWED_HOSTS}
+export TUNNELTO_CTRL_PORT ${TUNNELTO_CTRL_PORT}
+export TUNNELTO_TUNNEL_PORT ${TUNNELTO_TUNNEL_PORT}
+haproxy -f /app/haproxy.cfg

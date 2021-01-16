@@ -24,13 +24,12 @@ RUN cargo build --bin tunnelto_server --release
 RUN find target -name tunnelto_server -exec cp {} target \;
 
 FROM base
-RUN apk add --no-cache openssl tini haproxy libgcc
+RUN apk add --no-cache openssl haproxy libgcc
+RUN wget -qO- https://github.com/just-containers/s6-overlay/releases/download/v1.21.8.0/s6-overlay-amd64.tar.gz | tar -xzC /
 WORKDIR /app
 COPY --from=build_python /app/python-deps /
 COPY --from=build_rust /app/target/tunnelto_server ./
-COPY haproxy.cfg docker-entrypoint.py renew-certificate.py ./
-# - Use Tini explicitly since Heroku does not provide a way to
-#   `docker run --init`
-# - Make Tini be a subreaper since Heroku does not run it as PID 1.
-ENTRYPOINT ["tini", "-s", "--"]
-CMD ["./docker-entrypoint.py"]
+COPY haproxy.cfg renew-certificate.py ./
+COPY services.d /etc/services.d/
+ENV S6_KEEP_ENV=1
+CMD ["/init"]
