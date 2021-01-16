@@ -40,7 +40,11 @@ The provided Dockerfile creates an image meant to run on Heroku which has the fo
     - `X_HEROKU_CLIENT_SECRET`: (For SSL support only) TODO
     - `X_HEROKU_REFRESH_TOKEN`: (For SSL support only) TODO
 
-1. Deploy this repository to Heroku, either via Git or by building the Docker container locally and then deploying manually per instructions in https://devcenter.heroku.com/articles/container-registry-and-runtime.
+1. Deploy the application. As documented in https://devcenter.heroku.com/categories/deploying-with-docker, you have two options:
+    - Git push this repository to Heroku, which will trigger a Docker build on Heroku
+        - Note: If you intend to deploy more than once, you may want to build the Docker image locally as Heroku does not maintain Docker build cache.
+repository to Heroku, either via Git or by building the Docker container locally and then deploying manually per instructions in https://devcenter.heroku.com/articles/container-registry-and-runtime.
+    - Deploy manually. As a convenience, you can utilize the `Makefile` helper by running `make release HEROKU_APP={app-name-or-id}`
 
 1. To provision SSL certificates for the first time, run `heroku run -a {app-name-or-id} ./renew-certificate.py`
 
