@@ -17,7 +17,13 @@ push: tag
 	docker push "registry.heroku.com/$(HEROKU_APP)/$(SERVICE)"
 
 .PHONY: tag
+tag: IMAGE_ID := $(shell docker-compose images -q "$(SERVICE)")
 tag: build
+	$(if \
+		$(filter 1,$(words $(IMAGE_ID))), \
+		, \
+		$(error Expected only one image ID instead of $(IMAGE_ID)) \
+	)
 	docker tag \
 		"$$(docker-compose images -q "$(SERVICE)")" \
 		"registry.heroku.com/$(HEROKU_APP)/$(SERVICE)"
