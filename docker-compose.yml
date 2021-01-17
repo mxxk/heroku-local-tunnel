@@ -4,6 +4,10 @@ services:
     build: .
     env_file:
       .env
+    environment:
+      # Only applies when started from Doocker Compose, not Heroku, due to the
+      # read-only volume mounts
+      - S6_READ_ONLY_ROOT=1
     ports:
       - 8000:${PORT}
     volumes:
